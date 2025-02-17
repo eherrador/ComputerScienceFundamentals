@@ -1,3 +1,5 @@
+import time
+import matplotlib.pyplot as plt
 class Nodo:
     def __init__(self, valor):
         self.valor = valor
@@ -55,34 +57,72 @@ class ListaEnlazada:
             return None  # Índice inválido
         nodo.siguiente = self.insertar_recursivo(nodo.siguiente, index - 1, valor)
         return nodo
-    
-import time
 
-# Creamos una lista con 1000 elementos
-lista = ListaEnlazada()
-for i in range(1000):
-    lista.insertar_iterativo(i, i)
+# 🔥 Prueba de rendimiento
+tamanios = [100, 500, 1000, 5000, 10000]
+tiempos_acceso_iter = []
+tiempos_acceso_recur = []
+tiempos_insert_iter = []
+tiempos_insert_recur = []
 
-# Medimos acceso iterativo
-start = time.time()
-lista.acceder_iterativo(500)
-end = time.time()
-print(f"Tiempo acceso iterativo: {end - start:.6f} segundos")
+# Creamos una lista
+for n in tamanios:
+    lista = ListaEnlazada()
+    for i in range(n):
+        lista.insertar_iterativo(i, i)
 
-# Medimos acceso recursivo
-start = time.time()
-lista.acceder_recursivo(lista.cabeza, 500)
-end = time.time()
-print(f"Tiempo acceso recursivo: {end - start:.6f} segundos")
+    # Medimos acceso iterativo
+    start = time.time()
+    lista.acceder_iterativo(500)
+    end = time.time()
+    tiempos_acceso_iter.append(end - start)
 
-# Medimos inserción iterativa
-start = time.time()
-lista.insertar_iterativo(500, 9999)
-end = time.time()
-print(f"Tiempo inserción iterativa: {end - start:.6f} segundos")
+    # Medimos acceso recursivo
+    start = time.time()
+    lista.acceder_recursivo(lista.cabeza, 500)
+    end = time.time()
+    tiempos_acceso_recur.append(end - start)
 
-# Medimos inserción recursiva
-start = time.time()
-lista.cabeza = lista.insertar_recursivo(lista.cabeza, 500, 9999)
-end = time.time()
-print(f"Tiempo inserción recursiva: {end - start:.6f} segundos")
+    # Medimos inserción iterativa
+    start = time.time()
+    lista.insertar_iterativo(500, 9999)
+    end = time.time()
+    tiempos_insert_iter.append(end - start)
+
+    # Medimos inserción recursiva
+    start = time.time()
+    lista.cabeza = lista.insertar_recursivo(lista.cabeza, 500, 9999)
+    end = time.time()
+    tiempos_insert_recur.append(end - start)
+
+print(f"Tamaños probados: {tamanios}")
+print(f"Tiempos Acceso Iterativo: {tiempos_acceso_iter}")
+print(f"Tiempos Acceso Recursivo: {tiempos_acceso_recur}")
+print(f"Tiempos Inserción Iterativa: {tiempos_insert_iter}")
+print(f"Tiempos Inserción Recursiva: {tiempos_insert_recur}")
+
+# 📊 Generar gráfico
+plt.figure(figsize=(10, 5))
+
+# Gráfico de acceso
+plt.subplot(1, 2, 1)
+plt.plot(tamanios, tiempos_acceso_iter, label="Acceso Iterativo", marker="o")
+plt.plot(tamanios, tiempos_acceso_recur, label="Acceso Recursivo", marker="s")
+plt.xlabel("Tamaño de la lista")
+plt.ylabel("Tiempo (s)")
+plt.title("Tiempo de Acceso")
+plt.legend()
+plt.grid()
+
+# Gráfico de inserción
+plt.subplot(1, 2, 2)
+plt.plot(tamanios, tiempos_insert_iter, label="Inserción Iterativa", marker="o")
+plt.plot(tamanios, tiempos_insert_recur, label="Inserción Recursiva", marker="s")
+plt.xlabel("Tamaño de la lista")
+plt.ylabel("Tiempo (s)")
+plt.title("Tiempo de Inserción")
+plt.legend()
+plt.grid()
+
+plt.tight_layout()
+plt.show()
