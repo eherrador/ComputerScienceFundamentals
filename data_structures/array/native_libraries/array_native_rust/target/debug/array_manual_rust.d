@@ -1,1 +1,0 @@
-/Users/edgarherrador/Documents/Github/ComputerScienceFundamentals/data_structures/array/manual_implementation/array_manual_rust/target/debug/array_manual_rust: /Users/edgarherrador/Documents/Github/ComputerScienceFundamentals/data_structures/array/manual_implementation/array_manual_rust/src/main.rs
